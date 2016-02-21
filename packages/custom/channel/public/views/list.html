@@ -1,0 +1,59 @@
+<section data-ng-controller="ChannelController" data-ng-init="find()">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>chat ID</th>
+                <th>URL</th>
+                <th>채널명</th>
+                <th>상담사</th>
+                <th>생성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="channel in channels">
+                <td>{{channel._id}}</td>
+                <td>{{channel.url}}</td>
+                <td>{{channel.channelname}}</td>
+                <td>{{channel.agents}}</td>
+                <td>{{channel.created}}</td>
+            </tr>
+            <tr>
+                <td><input class="form-control" ng-model="contact.name"></td>
+                <td><input class="form-control" ng-model="contact.email"></td>
+                <td><input class="form-control" ng-model="contact.num"></td>
+                <td>
+                    <button class="btn btn-primary" ng-click="addContact()"> Add Contact</button>
+                </td>
+                <td>
+                    <button class="btn btn-info" ng-click="update(contact._id)">Update</button>
+                </td>
+                <td>
+                    <button class="btn btn-info" ng-click="clear()">Clear</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <ul class="channels unstyled">
+        <li data-ng-repeat="channel in channels">
+            <span>{{channel.created | date:'medium'}}</span> /
+            <span>{{channel.user.name}}</span>
+            <h2>
+                <a data-ng-href="/channels/{{channel._id}}">{{channel.title}}</a>
+        <span data-ng-if="hasAuthorization(channel)">
+          <a class="btn" href="/channels/{{channel._id}}/edit">
+              <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(channel);">
+              <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>
+            </h2>
+            <div>{{channel.content}}</div>
+        </li>
+    </ul>
+    <h1 data-ng-hide="!channels || channels.length">No channels yet. <br> Why don't you <a href="/channels/create">Create
+        One</a>?</h1>
+</section>

@@ -23,12 +23,14 @@ Articles.register(function(app, auth, database, circles, swagger) {
   Articles.menus.add({
     'roles': ['authenticated'],
     'title': 'Articles',
-    'link': 'all articles'
+    'link': 'all articles',
+    'menu': 'topmenu'
   });
   Articles.menus.add({
     'roles': ['authenticated'],
     'title': 'Create New Article',
-    'link': 'create article'
+    'link': 'create article',
+    'menu': 'topmenu'
   });
 
   Articles.events.defaultData({

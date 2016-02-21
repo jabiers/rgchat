@@ -5,10 +5,10 @@
     <div class="alert alert-danger animated fadeIn" ng-show="reg.usernameError">{{reg.usernameError}}</div>
     <div class="alert alert-danger animated fadeIn" ng-show="reg.emailError">{{reg.emailError}}</div>
     <form id="register_form" ng-submit="reg.register()">
-        <h2>Sign Up</h2>
+        <h2>회원가입</h2>
 
         <div class="input-wrapper">
-            <input required id="name" type="text" name="name" placeholder="Full Name"
+            <input required id="name" type="text" name="name" placeholder="이름"
                    ng-model="reg.user.name">
 
             <div class="error_message">Please enter a correct info #</div>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="input-wrapper">
-            <input required id="email_block" type="email" name="email" placeholder="Email Address"
+            <input required id="email_block" type="email" name="email" placeholder="이메일"
                    ng-model="reg.user.email">
 
             <div class="error_message">Please enter a correct info #</div>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="input-wrapper">
-            <input required id="username" type="text" name="username" placeholder="Username"
+            <input required id="username" type="text" name="username" placeholder="아이디"
                    ng-model="reg.user.username">
 
             <div class="error_message">Please enter a correct info #</div>
@@ -53,14 +53,20 @@
               </div>
         </span>
         </div>
-
+        <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default" ng-model="reg.user.roles" ng-click="reg.user.roles = ['operator']"
+                       ng-class="{ 'active' : reg.user.roles.indexOf('operator') != -1 } ">
+                    <input name="cssPre1" id="css1" value="operator" type="radio">관리자
+                </label>
+                <label class="btn btn-default"  ng-model="reg.user.roles" ng-click="reg.user.roles = ['agent']"
+                       ng-class="{ 'active' : reg.user.roles.indexOf('agent') != -1 }">
+                    <input name="cssPre1" id="agent" value="agent" type="radio">상담사
+                </label>
+            </div>
         <div class="button_register">
-            <button type="submit" class="submit_button">Sign up</button>
-            <p>Already have an account?</p>
-            <a ui-sref='auth.login'>Log in</a>
-        </div>
-        <div class="woman_ninja_bottom">
-            <img src="/theme/assets/img/woman_ninja.png" alt="#">
+            <button type="submit" class="submit_button">회원가입</button>
+            <p>이미 계정이 있다면</p>
+            <a ui-sref='auth.login'>로그인</a>
         </div>
     </form>
 </div>

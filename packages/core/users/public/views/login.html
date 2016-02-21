@@ -2,11 +2,11 @@
 
     <div class="alert alert-danger animated fadeIn" ng-show="login.loginError">{{login.loginError}}</div>
 
-    <h2>Login</h2>
+    <h2>로그인</h2>
 
     <form id="login_form" ng-submit="login.login()">
         <div class="input-wrapper">
-            <input required id="email_block" type="email" name="email" placeholder="Email Address" ng-model="login.user.email">
+            <input required id="email_block" type="email" name="email" placeholder="이메일" ng-model="login.user.email">
             <div class="error_message">Please enter a correct info #</div>
             <span class="pic email"></span>
         </div>
@@ -20,12 +20,12 @@
                 </span>
         </div>
         <div class="forgot_password">
-            <a ui-sref='forgot-password'>Forgot your password?</a>
+            <a ui-sref='forgot-password'>비밀번호를 잊어버렸나요?</a>
         </div>
         <div class="button_login">
-            <button type="submit" class="submit_button">Login</button>
-            <p>Don't have an account?</p>
-            <a ui-sref='auth.register' >Sign up</a>
+            <button type="submit" class="submit_button">로그인</button>
+            <p>계정이 없으신가요</p>
+            <a ui-sref='auth.register' >회원가입</a>
         </div>
         <div class="woman_ninja_bottom">
             <img src="/theme/assets/img/woman_ninja.png" alt="#">

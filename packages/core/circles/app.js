@@ -26,12 +26,14 @@ Circles.register(function(app, auth, database) {
     title: 'Circles',
     link: 'manage circles',
     roles: ['authenticated', 'admin'],
-    menu: 'main'
+    menu: 'admin'
   });
 
   Circles.models = {};
 
   Circles.registerCircle('admin');
+  Circles.registerCircle('agent');
+  Circles.registerCircle('operator');
   Circles.registerCircle('can delete content', ['admin']);
   Circles.registerCircle('can edit content', ['admin']);
   Circles.registerCircle('can create content', ['admin']);
@@ -47,9 +49,7 @@ function registerCircle(name, parents) {
   var query = { name: name };
   var set = {};
   if(parents) {
-    set.$push = {
-      circles: parents
-    };
+    set.circles = parents;
   }
 
   Circle.findOne(query, function(err, data) {

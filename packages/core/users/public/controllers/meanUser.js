@@ -25,7 +25,7 @@ angular.module('mean.users')
       
       vm.input = {
         type: 'password',
-        placeholder: 'Password',
+        placeholder: '비밀번호',
         confirmPlaceholder: 'Repeat Password',
         iconClass: '',
         tooltipText: 'Show password'
@@ -33,9 +33,9 @@ angular.module('mean.users')
 
       vm.togglePasswordVisible = function() {
         vm.input.type = vm.input.type === 'text' ? 'password' : 'text';
-        vm.input.placeholder = vm.input.placeholder === 'Password' ? 'Visible Password' : 'Password';
+        vm.input.placeholder = vm.input.placeholder === '비밀번호' ? '비밀번호 보이기' : '비밀번호';
         vm.input.iconClass = vm.input.iconClass === 'icon_hide_password' ? '' : 'icon_hide_password';
-        vm.input.tooltipText = vm.input.tooltipText === 'Show password' ? 'Hide password' : 'Show password';
+        vm.input.tooltipText = vm.input.tooltipText === '비밀번호 보이기' ? '비밀번호 숨기기' : '비밀번호 보이기';
       };
 
       $rootScope.$on('loginfailed', function(){
@@ -58,34 +58,38 @@ angular.module('mean.users')
 
       vm.input = {
         type: 'password',
-        placeholder: 'Password',
-        placeholderConfirmPass: 'Repeat Password',
+        placeholder: '비밀번호',
+        placeholderConfirmPass: '비밀번호 확인',
         iconClassConfirmPass: '',
-        tooltipText: 'Show password',
-        tooltipTextConfirmPass: 'Show password'
+        tooltipText: '비밀번호 보이기',
+        tooltipTextConfirmPass: '비밀번호 보이기'
       };
 
       vm.togglePasswordVisible = function() {
         vm.input.type = vm.input.type === 'text' ? 'password' : 'text';
-        vm.input.placeholder = vm.input.placeholder === 'Password' ? 'Visible Password' : 'Password';
+        vm.input.placeholder = vm.input.placeholder === '비밀번호' ? '비밀번호 보이기' : '비밀번호';
         vm.input.iconClass = vm.input.iconClass === 'icon_hide_password' ? '' : 'icon_hide_password';
-        vm.input.tooltipText = vm.input.tooltipText === 'Show password' ? 'Hide password' : 'Show password';
+        vm.input.tooltipText = vm.input.tooltipText === '비밀번호 보이기' ? '비밀번호 숨기기' : '비밀번호 보이기';
       };
       vm.togglePasswordConfirmVisible = function() {
         vm.input.type = vm.input.type === 'text' ? 'password' : 'text';
-        vm.input.placeholderConfirmPass = vm.input.placeholderConfirmPass === 'Repeat Password' ? 'Visible Password' : 'Repeat Password';
+        vm.input.placeholderConfirmPass = vm.input.placeholderConfirmPass === '비밀번호 확인' ? '비밀번호 보이기' : '비밀번호 확인';
         vm.input.iconClassConfirmPass = vm.input.iconClassConfirmPass === 'icon_hide_password' ? '' : 'icon_hide_password';
-        vm.input.tooltipTextConfirmPass = vm.input.tooltipTextConfirmPass === 'Show password' ? 'Hide password' : 'Show password';
+        vm.input.tooltipTextConfirmPass = vm.input.tooltipTextConfirmPass === '비밀번호 보이기' ? '비밀번호 숨기기' : '비밀번호 보이기';
       };
 
       // Register the register() function
       vm.register = function() {
+        console.log(this.user);
         MeanUser.register(this.user);
       };
 
       $rootScope.$on('registerfailed', function(){
         vm.registerError = MeanUser.registerError;
       });
+
+      vm.user.roles = ['operator'];
+
     }
   ])
   .controller('ForgotPasswordCtrl', ['MeanUser', '$rootScope',
