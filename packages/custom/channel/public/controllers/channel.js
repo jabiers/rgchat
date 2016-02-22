@@ -54,6 +54,7 @@
         }
 
         function create (isValid) {
+            console.log(isValid);
             if (isValid) {
                 var channel = new Channels($scope.channel);
 

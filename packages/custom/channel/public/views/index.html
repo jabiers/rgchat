@@ -33,7 +33,6 @@
                                     <label mean-token="'create-url'" class="col-md-2 control-label">사용될 사이트 URL</label>
                                     <div class="col-md-10">
                                         <div class="input-group">
-
                                             <span class="input-group-addon" id="basic-addon1">http://</span>
                                             <input id="url" name="url" type="text" data-ng-model="channel.url" class="form-control" aria-describedby="basic-addon1" required>
                                             <div ng-show="submitted && channelForm.url.$invalid" class="help-block">
@@ -45,16 +44,17 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">첫인사말</label>
                                     <div class="col-md-10">
-                                        <input id="hellomessage" name="hellomessage" type="text" data-ng-model="channel.hellomessage" class="form-control" required>
+                                        <input id="hellomessage" name="hellomessage" type="text"
+                                               placeholder="상담 원하는 내용을 입력해주세요. 가능한한 빨리 답변 드리겠습니다."
+                                               data-ng-model="channel.hellomessage" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">부재중멘트</label>
                                     <div class="col-md-10">
-                                        <input id="nobodymessage" name="nobodymessage" type="text" data-ng-model="channel.nobodymessage" class="form-control" required>
-                                        <div ng-show="submitted && channelForm.channelname.$invalid" class="help-block">
-                                            <p ng-show="channelForm.channelname.$error.required">사용할 채널명을 입력해주세요.</p>
-                                        </div>
+                                        <input id="nobodymessage" name="nobodymessage" type="text"
+                                               placeholder="현재 접속중인 상담원이 없습니다."
+                                               data-ng-model="channel.nobodymessage" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">

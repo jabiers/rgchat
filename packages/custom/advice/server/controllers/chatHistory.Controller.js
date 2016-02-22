@@ -26,7 +26,7 @@ module.exports = function (ChatHistories) {
 
             var agentId = req.user;
 
-            ChatHistory.find({agents: user})
+            ChatHistory.find({agents: req.user})
             .sort('created')
             .populate('chats')
             .exec(function (err, chatHistories) {
