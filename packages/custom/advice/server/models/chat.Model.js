@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /**
- * Article Schema
+ * Chat Schema
  */
 var ChatSchema = new Schema({
     created: {

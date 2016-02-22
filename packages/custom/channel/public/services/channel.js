@@ -9,7 +9,7 @@
 
   function Channels($resource) {
     return $resource('api/channels/:channelId', {
-      articleId: '@_id'
+      channelId: '@_id'
     }, {
       update: {
         method: 'PUT'

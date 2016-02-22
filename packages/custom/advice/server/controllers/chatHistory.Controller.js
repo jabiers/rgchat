@@ -1,135 +1,79 @@
+'use strict';
 
+/**
+* Module dependencies.
+*/
 var mongoose = require('mongoose'),
-    Chat = mongoose.model('Chat'),
-    config = require('meanio').loadConfig(),
-    ChatHistory = mongoose.model('ChatHistory');
+ChatHistory = mongoose.model('ChatHistory'),
+_ = require('lodash');
+
 
 module.exports = function (ChatHistories) {
-
     return {
-        /**
-         * Find article by id
-         */
-        chatHistory: function (chathistoryid, next) {
-            ChatHistory.findById(chathistoryid, next);
-        },
-        /**
-         * Create an chatHistory
-         */
-        create: function (data, next) {
-            var chatHistory = new ChatHistory(data);
-            chatHistory.save(next);
-        },
+        createChatHistory : function (req, res) {
+            var chatHistory = new ChatHistory(req.body);
 
-        addChat: function (data, next) {
-            var chat = new Chat(data);
-            chat.save(function (err) {
-                console.log(chat);
-                if (err) console.log(err);
-                ChatHistory.findByIdAndUpdate(
-                    chat.chathistoryid,
-                    {$push: {chats: chat._id}, $set: {lastmessage: chat.message}},
-                    {'new': true, 'multi': true},
-                    function(){}
-                );
-
-                next(err, chat);
+            chatHistory.save(function (err) {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Cannot save the ChatHistory'
+                    });
+                }
+                res.json(chatHistory);
             });
         },
+        all : function (req, res) {
 
-        finishChat: function (chathistoryid, next) {
-            ChatHistory.findByIdAndUpdate(
-                chathistoryid,
-                {$set: {finished: Date.now()}},
-                {'new': true},
-                next
-            );
+            var agentId = req.user;
+
+            ChatHistory.find({agents: user})
+            .sort('created')
+            .populate('chats')
+            .exec(function (err, chatHistories) {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Cannot list the ChatHistories'
+                    });
+                }
+                res.json(chatHistories);
+            });
+        },
+        destroy : function (req, res) {
+            var chatHistory = req.chatHistory;
+            chatHistory.remove(function (err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        error: 'Cannot delete the ChatHistory'
+                    });
+                }
+                res.json(chatHistory);
+            });
+        },
+        update : function (req, res) {
+
+            var chatHistory = req.chatHistory;
+            chatHistory = _.extend(chatHistory, req.body);
+
+            chatHistory.save(function (err) {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Cannot update the ChatHistory'
+                    });
+                }
+                res.json(chatHistory);
+            });
+        },
+        show : function (req, res) {
+            res.json(req.chatHistory);
+        },
+        chatHistory: function (req, res, next, id) {
+            ChatHistory.load(id, function (err, chatHistory) {
+                if (err) return next(err);
+                if (!chatHistory) return next(new Error('Failed to load ChatHistory ' + id));
+                req.chatHistory = chatHistory;
+                next();
+            });
         }
-        ///**
-        // * Update an article
-        // */
-        //update: function(req, res) {
-        //    var article = req.article;
-        //
-        //    article = _.extend(article, req.body);
-        //
-        //
-        //    article.save(function(err) {
-        //        if (err) {
-        //            return res.status(500).json({
-        //                error: 'Cannot update the article'
-        //            });
-        //        }
-        //
-        //        Articles.events.publish({
-        //            action: 'updated',
-        //            user: {
-        //                name: req.user.name
-        //            },
-        //            name: article.title,
-        //            url: config.hostname + '/articles/' + article._id
-        //        });
-        //
-        //        res.json(article);
-        //    });
-        //},
-        ///**
-        // * Delete an article
-        // */
-        //destroy: function(req, res) {
-        //    var article = req.article;
-        //
-        //
-        //    article.remove(function(err) {
-        //        if (err) {
-        //            return res.status(500).json({
-        //                error: 'Cannot delete the article'
-        //            });
-        //        }
-        //
-        //        Articles.events.publish({
-        //            action: 'deleted',
-        //            user: {
-        //                name: req.user.name
-        //            },
-        //            name: article.title
-        //        });
-        //
-        //        res.json(article);
-        //    });
-        //},
-        ///**
-        // * Show an article
-        // */
-        //show: function(req, res) {
-        //
-        //    Articles.events.publish({
-        //        action: 'viewed',
-        //        user: {
-        //            name: req.user.name
-        //        },
-        //        name: req.article.title,
-        //        url: config.hostname + '/articles/' + req.article._id
-        //    });
-        //
-        //    res.json(req.article);
-        //},
-        ///**
-        // * List of Articles
-        // */
-        //all: function(req, res) {
-        //    var query = req.acl.query('Article');
-        //
-        //    query.find({}).sort('-created').populate('user', 'name username').exec(function(err, articles) {
-        //        if (err) {
-        //            return res.status(500).json({
-        //                error: 'Cannot list the articles'
-        //            });
-        //        }
-        //
-        //        res.json(articles)
-        //    });
-        //
-        //}
-    };
-}();
+    }
+}

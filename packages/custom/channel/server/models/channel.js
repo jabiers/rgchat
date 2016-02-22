@@ -1,15 +1,15 @@
 'use strict';
 
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+Schema = mongoose.Schema;
 
 
 /**
- * Article Schema
- */
+* Article Schema
+*/
 var ChannelSchema = new Schema({
     created: {
         type: Date,
@@ -25,6 +25,16 @@ var ChannelSchema = new Schema({
         required: true,
         trim: true
     },
+    hellomessage: {
+        type: String,
+        required: true,
+        default: "상담 원하는 내용을 입력해주세요. 가능한한 빨리 답변 드리겠습니다."
+    },
+    nobodymessage: {
+        type: String,
+        required: true,
+        default: "현재 접속중인 상담원이 없습니다."
+    },
     operator: {
         type: Schema.ObjectId,
         ref: 'User',
@@ -35,14 +45,13 @@ var ChannelSchema = new Schema({
         ref: 'User'
     }],
     updated: {
-        type: Date,
-        default: Date.now
+        type: Array
     }
 });
 
 /**
- * Validations
- */
+* Validations
+*/
 ChannelSchema.path('channelname').validate(function (channelname) {
     return !!channelname;
 }, 'channelname cannot be blank');
@@ -52,8 +61,8 @@ ChannelSchema.path('url').validate(function (url) {
 }, 'url cannot be blank');
 
 /**
- * Statics
- */
+* Statics
+*/
 ChannelSchema.statics.load = function (id, cb) {
     this.findOne({
         _id: id

@@ -1,12 +1,12 @@
 'use strict';
 
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 var mongoose = require('mongoose'),
-    Channel = mongoose.model('Channel'),
-    config = require('meanio').loadConfig(),
-    _ = require('lodash');
+Channel = mongoose.model('Channel'),
+config = require('meanio').loadConfig(),
+_ = require('lodash');
 
 module.exports = function (Channels) {
 
@@ -21,31 +21,30 @@ module.exports = function (Channels) {
         },
         all: function (req, res) {
             Channel.find({operator: req.user._id})
-                .sort('-created')
-                .populate('agents')
-                .exec(function (err, channel) {
-                    if (err) {
-                        return res.status(500).json({
-                            error: 'Cannot list the channel'
-                        });
-                    }
+            .sort('-created')
+            .populate('agents')
+            .exec(function (err, channel) {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Cannot list the channel'
+                    });
+                }
 
-                    res.json(channel);
-                });
+                res.json(channel);
+            });
         },
         show: function (req, res) {
-            Channel.find({operator: req.params.channelId})
-                .sort('-created')
-                .populate('agents')
-                .exec(function (err, channel) {
-                    if (err) {
-                        return res.status(500).json({
-                            error: 'Cannot list the channel'
-                        });
-                    }
+            Channels.events.publish({
+                action: 'viewed',
+                user: {
+                    name: req.user.name
+                },
+                name: req.channel.channelname,
+                url: config.hostname + '/channels/' + req.channel._id
+            });
 
-                    res.json(channel);
-                });
+            res.json(req.channel);
+
         },
         create: function (req, res) {
             var channel = new Channel(req.body);
@@ -55,7 +54,7 @@ module.exports = function (Channels) {
                 if (err) {
                     if (err) {
                         return res.status(500).json({
-                            error: 'Cannot save the article'
+                            error: 'Cannot save the channel'
                         });
                     }
                 }
@@ -64,13 +63,12 @@ module.exports = function (Channels) {
             });
         },
         /**
-         * Update an article
-         */
+        * Update an article
+        */
         update: function(req, res) {
             var channel = req.channel;
 
             channel = _.extend(channel, req.body);
-
 
             channel.save(function(err) {
                 if (err) {
@@ -83,11 +81,10 @@ module.exports = function (Channels) {
             });
         },
         /**
-         * Delete an article
-         */
+        * Delete an article
+        */
         destroy: function(req, res) {
             var channel = req.channel;
-
 
             channel.remove(function(err) {
                 if (err) {

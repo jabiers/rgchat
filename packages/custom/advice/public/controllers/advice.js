@@ -3,8 +3,8 @@
 
     /* jshint -W098 */
     angular
-        .module('mean.advice')
-        .controller('AdviceController', AdviceController);
+    .module('mean.advice')
+    .controller('AdviceController', AdviceController);
 
     AdviceController.$inject = ['$scope', '$http', 'Global', 'Advice', 'mySocket', 'Chat', 'ChatHistory'];
 
@@ -14,24 +14,30 @@
             name: 'advice'
         };
 
-        var data = {
-            channel: 'syno',
-            clientid: 'test',
-            username: '관리자'
+        // var data = {
+        //     channel: 'syno',
+        //     clientid: 'test',
+        //     username: '관리자'
+        // };
+        //
+        // var chatHistory = new ChatHistory(data);
+        // console.log(chatHistory);
+
+        // chatHistory.$save(function(res) {
+        //     console.log(res);
+        // });
+
+        $scope.init = function () {
+            console.log('init');
+            ChatHistory.query(function(chatHistories) {
+                $scope.chatHistories = chatHistories;
+            });
+            // ChatHistory.get({
+            // }, function(res) {
+            //     console.log(res);
+            //     //$scope.article = article;
+            // });
         };
-        var chatHistory = new ChatHistory(data);
-        console.log(chatHistory);
-
-        chatHistory.$save(function(res) {
-            console.log(res);
-        });
-
-        ChatHistory.get({
-
-        }, function(res) {
-            console.log(res);
-            //$scope.article = article;
-        });
 
         return;
         //

@@ -1,25 +1,28 @@
-<div id="wrapper" data-ng-controller="AdviceController">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Sidebar -->
-  <div id="sidebar-wrapper">
-    <div class="row msg-container" ng-repeat="chatHistory in vm.chatHistory" ng-click="vm.selectUser(chatHistory)">
-      <div class="col-md-12 col-xs-12" ng-click="selectUser(chatHistory.username)">
-        <div class="chat-msg" ng-click="selectUser(chatHistory.username)">
-          <!-- <img ng-if="message.imageUrl" class="profile" ng-class="{'pull-right': selfAuthored, 'pull-left': !selfAuthored}" ng-src="{{message.imageUrl}}" /> -->
-          <p>{{chatHistory.channel}}</p>
-          <div class="chat-msg-author">
-            <strong>{{chatHistory.lastmessage}}</strong>&nbsp;
-            <span class="date">{{chatHistory.updated || chatHistory.finished}}</span>
-          </div>
+<section data-ng-controller="AdviceController" data-ng-init="init()">
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="row msg-container" ng-repeat="chatHistory in chatHistories" ng-click="vm.selectChatHistory(chatHistory)">
+                <div class="col-md-12 col-xs-12">
+                    <div class="chat-msg">
+                        <!-- <img ng-if="message.imageUrl" class="profile" ng-class="{'pull-right': selfAuthored, 'pull-left': !selfAuthored}" ng-src="{{message.imageUrl}}" /> -->
+                        <p>{{chatHistory.channel}}</p>
+                        <div class="chat-msg-author">
+                            <strong>{{chatHistory.lastmessage}}</strong>&nbsp;
+                            <span class="date">{{chatHistory.updated || chatHistory.finished}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <!-- /#sidebar-wrapper -->
+        <!-- /#sidebar-wrapper -->
 
-  <!-- Page Content -->
-  <div id="page-content-wrapper">
-    <rgchat-advice-chat
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <rgchat-advice-chat
             id='rgchat'
             messages="vm.messages"
             username="vm.agentname"
@@ -29,13 +32,13 @@
             theme="default"
             submit-function="vm.sendMessage"
             visible="true">
-    </rgchat-advice-chat>
+        </rgchat-advice-chat>
 
-    <!-- 테마 바꾸기용 jquery
-    $('#rgchat').removeClass(function (index, css) {
-    return (css.match (/(^|\s)chat-th-\S+/g) || []).join(' ');
-}).addClass('chat-th-irontec'); -->
-  </div>
+        <!-- 테마 바꾸기용 jquery
+        $('#rgchat').removeClass(function (index, css) {
+        return (css.match (/(^|\s)chat-th-\S+/g) || []).join(' ');
+    }).addClass('chat-th-irontec'); -->
+</div>
 </div>
 <!--<script src="/lodash.js"></script>-->
 <!--<script src="/jquery/dist/jquery.js"></script>-->
@@ -45,3 +48,4 @@
 <!--<script src="/scripts/templates.js"></script>-->
 
 <!--<script src="/adminApp.js"></script>-->
+</section>

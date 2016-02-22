@@ -1,3 +1,20 @@
 .advice-example h1 {
   background-color: purple
 }
+
+html, body{
+  width: 100%;
+  height: 100%;
+}
+
+/*
+.my-custom-chat-theme > .chat-window{
+  float: right;
+}
+*/
+
+.chat-container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}

@@ -1,6 +1,5 @@
 'use strict';
 /* jshint -W098 */
-var chatHistories = require('../controllers/chatHistory');
 
 // goal authorization helpers
 var hasAuthorization = function (req, res, next) {
@@ -11,6 +10,7 @@ var hasAuthorization = function (req, res, next) {
 };
 
 module.exports = function (ChatHistories, app, auth) {
+    var chatHistories = require('../controllers/chatHistory.Controller')(ChatHistories);
 
     app.route('/api/ChatHistories').get(chatHistories.all);
     app.route('/api/ChatHistories').post(auth.requiresLogin, chatHistories.createChatHistory);

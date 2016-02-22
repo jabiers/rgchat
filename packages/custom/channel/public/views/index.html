@@ -6,7 +6,7 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-                <form name="channelForm" class="form-horizontal row-border" data-ng-submit="create(channelForm.$valid);" novalidate>
+                <form name="channelForm" class="form-horizontal row-border" data-ng-submit="createOrUpdate(channelForm.$valid);" novalidate>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">채널</h4>
@@ -32,14 +32,33 @@
                                 <div class="form-group" ng-class="{ 'has-error' : submitted && channelForm.url.$invalid }">
                                     <label mean-token="'create-url'" class="col-md-2 control-label">사용될 사이트 URL</label>
                                     <div class="col-md-10">
-                                        <input id="url" name="url" type="text" data-ng-model="channel.url" value="http://" class="form-control" required>
-                                        <div ng-show="submitted && channelForm.url.$invalid" class="help-block">
-                                            <p ng-show="channelForm.url.$error.required">사용할 사이트 URL 을 입력해주세요.</p>
+                                        <div class="input-group">
+
+                                            <span class="input-group-addon" id="basic-addon1">http://</span>
+                                            <input id="url" name="url" type="text" data-ng-model="channel.url" class="form-control" aria-describedby="basic-addon1" required>
+                                            <div ng-show="submitted && channelForm.url.$invalid" class="help-block">
+                                                <p ng-show="channelForm.url.$error.required">사용할 사이트 URL 을 입력해주세요.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">상담사</label>
+                                    <label class="col-md-2 control-label">첫인사말</label>
+                                    <div class="col-md-10">
+                                        <input id="hellomessage" name="hellomessage" type="text" data-ng-model="channel.hellomessage" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">부재중멘트</label>
+                                    <div class="col-md-10">
+                                        <input id="nobodymessage" name="nobodymessage" type="text" data-ng-model="channel.nobodymessage" class="form-control" required>
+                                        <div ng-show="submitted && channelForm.channelname.$invalid" class="help-block">
+                                            <p ng-show="channelForm.channelname.$error.required">사용할 채널명을 입력해주세요.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">상담원</label>
                                     <div class="col-md-8">
                                         <input type="text" ng-model="channel.agents" class="form-control">
                                     </div>
@@ -54,16 +73,14 @@
                         <button mean-token="'create-submit'" type="submit" class="btn btn-primary">저장</button>
                     </div>
                 </form>
-
             </div>
-
         </div>
     </div>
 
     <div>
         <h2>채널</h2>
 
-        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="float: right;">+</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="float: right;" ng-click="channelFormReset();">+</button>
     </div>
     <div class="table-responsive">
 
@@ -71,52 +88,48 @@
         <br>
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th>채널 ID</th>
-                <th>URL</th>
-                <th>채널명</th>
-                <th>상담사</th>
-                <th>생성일</th>
-                <th></th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>채널 ID</th>
+                    <th>채널명</th>
+                    <th>URL</th>
+                    <th>첫인사말</th>
+                    <th>부재중멘트</th>
+                    <th>상담원수</th>
+                    <th>상담현황</th>
+                </tr>
             </thead>
             <tbody>
-            <tr data-ng-repeat="channel in channels">
-                <td>{{channel._id}}</td>
-                <td>{{channel.url}}</td>
-                <td>{{channel.channelname}}</td>
-                <td>{{channel.agents}}</td>
-                <td>{{channel.created}}</td>
-                <td>
-                    <button class="btn btn-info"></button>
-                </td>
-                <td>
-                    <button class="btn btn-warning"></button>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <!--<ul class="channels unstyled">-->
-    <!--<li data-ng-repeat="channel in channels">-->
-    <!--<span>{{channel.created | date:'medium'}}</span> /-->
-    <!--<span>{{channel.user.name}}</span>-->
-    <!--<h2>-->
-    <!--<a data-ng-href="/channels/{{channel._id}}">{{channel.title}}</a>-->
-    <!--<span data-ng-if="hasAuthorization(channel)">-->
-    <!--<a class="btn" href="/channels/{{channel._id}}/edit">-->
-    <!--<i class="glyphicon glyphicon-edit"></i>-->
-    <!--</a>-->
-    <!--<a class="btn" data-ng-click="remove(channel);">-->
-    <!--<i class="glyphicon glyphicon-trash"></i>-->
-    <!--</a>-->
-    <!--</span>-->
-    <!--</h2>-->
-    <!--<div>{{channel.content}}</div>-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--<h1 data-ng-hide="!channels || channels.length">No channels yet. <br> Why don't you <a href="/channels/create">Create-->
-    <!--One</a>?</h1>-->
+                <tr data-ng-repeat="channel in channels" data-toggle="modal" data-target="#myModal" ng-click="onClickChannelRow(channel);">
+                    <td>{{channel._id}}</td>
+                    <td>{{channel.channelname}}</td>
+                    <td>{{channel.url}}</td>
+                    <td>{{channel.hellomessage}}</td>
+                    <td>{{channel.nobodymessage}}</td>
+                    <td>{{channel.agents.length}}</td>
+                    <th><button type="button" class="btn btn-primary">현황</button></th>
+                </tr>
+            </table>
+        </div>
+        <!--<ul class="channels unstyled">-->
+        <!--<li data-ng-repeat="channel in channels">-->
+        <!--<span>{{channel.created | date:'medium'}}</span> /-->
+        <!--<span>{{channel.user.name}}</span>-->
+        <!--<h2>-->
+        <!--<a data-ng-href="/channels/{{channel._id}}">{{channel.title}}</a>-->
+        <!--<span data-ng-if="hasAuthorization(channel)">-->
+        <!--<a class="btn" href="/channels/{{channel._id}}/edit">-->
+        <!--<i class="glyphicon glyphicon-edit"></i>-->
+        <!--</a>-->
+        <!--<a class="btn" data-ng-click="remove(channel);">-->
+        <!--<i class="glyphicon glyphicon-trash"></i>-->
+        <!--</a>-->
+        <!--</span>-->
+        <!--</h2>-->
+        <!--<div>{{channel.content}}</div>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--<h1 data-ng-hide="!channels || channels.length">No channels yet. <br> Why don't you <a href="/channels/create">Create-->
+        <!--One</a>?</h1>-->
 
 
-</section>
+    </section>
