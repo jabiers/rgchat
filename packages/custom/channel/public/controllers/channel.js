@@ -3,8 +3,8 @@
 
     /* jshint -W098 */
     angular
-    .module('mean.channel')
-    .controller('ChannelController', ChannelController);
+        .module('mean.channel')
+        .controller('ChannelController', ChannelController);
 
     ChannelController.$inject = ['$http', '$scope', 'Global', 'Channels'];
 
@@ -15,15 +15,15 @@
         };
 
         $scope.find = function () {
-            Channels.query(function(channels) {
+            Channels.query(function (channels) {
                 $scope.channels = channels;
             });
         };
 
-        $scope.findOne = function() {
+        $scope.findOne = function () {
             Channels.get({
                 channelId: $scope.channelId
-            }, function(channel) {
+            }, function (channel) {
                 $scope.channel = channel;
             });
         };
@@ -38,22 +38,22 @@
             }
         };
 
-        $scope.onClickChannelRow = function(channel) {
+        $scope.onClickChannelRow = function (channel) {
             console.log(channel._id);
             Channels.get({
                 channelId: channel._id
-            }, function(channel) {
+            }, function (channel) {
                 console.log(channel);
                 $scope.channel = channel;
             });
         }
 
-        $scope.channelFormReset = function() {
+        $scope.channelFormReset = function () {
             $scope.submitted = false;
             $scope.channel = undefined;
         }
 
-        function create (isValid) {
+        function create(isValid) {
             console.log(isValid);
             if (isValid) {
                 var channel = new Channels($scope.channel);
@@ -75,7 +75,7 @@
             }
         }
 
-        function update (isValid) {
+        function update(isValid) {
             if (isValid) {
                 var channel = $scope.channel;
                 if (!channel.updated) {
@@ -84,7 +84,7 @@
 
                 channel.updated.push(new Date().getTime());
 
-                channel.$update(function() {
+                channel.$update(function () {
                     // $location.path('articles/' + channel._id);
                     $scope.submitted = false;
                 });
@@ -98,8 +98,32 @@
             $http({
                 method: "GET",
                 url: '/api/users/existEmail/' + email
-            }).then(function mySucces(response) {
-                console.log(response);
+            }).then(function mySucces(res) {
+                console.log(res.data);
+                if (res.data) {
+                    var channel = $scope.channel;
+                    if (!channel.updated) {
+                        channel.updated = [];
+                    }
+
+                    if (!channel.agents) {
+                        channel.agents = [];
+                    }
+
+                    channel.updated.push(new Date().getTime());
+                    channel.agents.push(res.data._id);
+
+                    channel.$update(function (res) {
+                        console.log(res);
+                        $scope.channelId = res._id;
+                        $scope.email = "";
+                        $scope.find();
+                        $scope.findOne();
+                        $scope.submitted = false;
+                    });
+                } else {
+                    $scope.addAgentSubmitted = true;
+                }
 
             }, function myError(response) {
                 console.log(response);

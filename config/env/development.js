@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://mongodb.rgchat.net/rgchat-dev',
+  db: 'mongodb://mongodb.rgchat.net/rgchat',
   debug: true,
   logging: {
     format: 'tiny'

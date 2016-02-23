@@ -314,9 +314,9 @@ module.exports = function(MeanUser) {
             });
         },
         existEmail: function (req, res, next) {
-            User.find({
+            User.findOne({
                 email: req.params.email
-            }, function(err, user) {
+            }, { _id:1 }, function(err, user) {
                 if (err) {
                     return res.status(400).send(err);
                 } else {

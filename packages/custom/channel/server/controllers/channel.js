@@ -1,18 +1,19 @@
 'use strict';
 
 /**
-* Module dependencies.
-*/
+ * Module dependencies.
+ */
 var mongoose = require('mongoose'),
-Channel = mongoose.model('Channel'),
-config = require('meanio').loadConfig(),
-_ = require('lodash');
+    Channel = mongoose.model('Channel'),
+    config = require('meanio').loadConfig(),
+    _ = require('lodash');
 
 module.exports = function (Channels) {
 
     return {
-        channel: function(req, res, next, id) {
-            Channel.load(id, function(err, channel) {
+        channel: function (req, res, next, id) {
+
+            Channel.load(id, function (err, channel) {
                 if (err) return next(err);
                 if (!channel) return next(new Error('Failed to load channel ' + id));
                 req.channel = channel;
@@ -21,17 +22,17 @@ module.exports = function (Channels) {
         },
         all: function (req, res) {
             Channel.find({operator: req.user._id})
-            .sort('-created')
-            .populate('agents')
-            .exec(function (err, channel) {
-                if (err) {
-                    return res.status(500).json({
-                        error: 'Cannot list the channel'
-                    });
-                }
+                .sort('-created')
+                .populate('agents')
+                .exec(function (err, channel) {
+                    if (err) {
+                        return res.status(500).json({
+                            error: 'Cannot list the channel'
+                        });
+                    }
 
-                res.json(channel);
-            });
+                    res.json(channel);
+                });
         },
         show: function (req, res) {
             Channels.events.publish({
@@ -49,29 +50,33 @@ module.exports = function (Channels) {
         create: function (req, res) {
             var channel = new Channel(req.body);
             channel.operator = req.user;
+            if (!channel.agents) {
+                channel.agents = [];
+            }
 
+            channel.agents.push(req.user._id);
             channel.save(function (err) {
+                console.log(err);
                 if (err) {
-                    if (err) {
-                        return res.status(500).json({
-                            error: 'Cannot save the channel'
-                        });
-                    }
+                    return res.status(500).json({
+                        error: 'Cannot save the channel'
+                    });
                 }
 
                 res.json(channel);
             });
         },
         /**
-        * Update an article
-        */
-        update: function(req, res) {
+         * Update an article
+         */
+        update: function (req, res) {
             var channel = req.channel;
 
             channel = _.extend(channel, req.body);
 
-            channel.save(function(err) {
+            channel.save(function (err) {
                 if (err) {
+                    console.log(err);
                     return res.status(500).json({
                         error: 'Cannot update the channel'
                     });
@@ -81,12 +86,12 @@ module.exports = function (Channels) {
             });
         },
         /**
-        * Delete an article
-        */
-        destroy: function(req, res) {
+         * Delete an article
+         */
+        destroy: function (req, res) {
             var channel = req.channel;
 
-            channel.remove(function(err) {
+            channel.remove(function (err) {
                 if (err) {
                     return res.status(500).json({
                         error: 'Cannot delete the channel'

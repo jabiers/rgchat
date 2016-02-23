@@ -4,5 +4,5 @@
 
 .vertical-scroll {
     max-height: 200px;
-    overflow-y:hidden;
+    overflow-y:auto;
 }

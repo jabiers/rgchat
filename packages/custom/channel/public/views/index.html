@@ -1,9 +1,7 @@
 <section data-ng-controller="ChannelController" data-ng-init="find()">
-
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
             <!-- Modal content-->
             <div class="modal-content">
                 <form name="channelForm" class="form-horizontal row-border" data-ng-submit="createOrUpdate(channelForm.$valid);" novalidate>
@@ -63,7 +61,7 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control" data-ng-model="email">
                                             <span class="input-group-btn">
-                                                <button type="btn" name="addagent" class="btn btn-primary" ng-click="addAgents(email)">+</button>
+                                                <input type="button" name="addagent" value="+" class="btn btn-primary" ng-click="addAgents(email)"></input>
                                             </span>
                                         </div>
                                     </div>
@@ -72,7 +70,6 @@
                                     <label class="col-md-2 control-label"></label>
                                     <div class="vertical-scroll col-md-10">
                                         <ul class="list-group">
-                                            <li class="list-group-item">abcdefg@ggg.com</li>
                                             <li class="list-group-item" data-ng-repeat="agent in channel.agents">{{agent.email}}</li>
                                         </ul>
 
