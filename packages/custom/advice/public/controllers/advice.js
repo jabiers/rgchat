@@ -14,18 +14,8 @@
             name: 'advice'
         };
 
-        // var data = {
-        //     channel: 'syno',
-        //     clientid: 'test',
-        //     username: '관리자'
-        // };
-        //
-        // var chatHistory = new ChatHistory(data);
-        // console.log(chatHistory);
-
-        // chatHistory.$save(function(res) {
-        //     console.log(res);
-        // });
+        $scope.chatHistories = [];
+        var chatHistoryId;
 
         $scope.init = function () {
             console.log('init');
@@ -39,6 +29,79 @@
             // });
         };
 
+        $scope.selectUser = function (chatHistory) {
+           console.log(chatHistory);
+           console.log(chatHistory._id);
+           chatHistoryId = chatHistory._id;
+        //    selectedClientId = chatHistory.clientid;
+           $http({
+               method: "GET",
+               url: "/api/chatHistoryById/" + chatHistory._id
+           }).then(function mySucces(response) {
+               console.log(response);
+               $scope.messages.splice(0, $scope.messages.length);
+               for (var val in response.data[0].chats) {
+                   $scope.messages.push(response.data[0].chats[val]);
+               }
+               console.log($scope.messages);
+           }, function myError(response) {
+               console.log(response);
+           });
+
+        };
+
+        $scope.sendMessage = function (message, agentname) {
+           console.log('send message');
+           if (message && message !== '' && agentname) {
+               console.log('aa');
+               //target 설정이 필요함 서버로 emit 만 되고 타겟에 대한 socket 을 다시 날림
+               mySocket.emit("send message to client", {
+                //    clientid: selectedClientId,
+                   message: message,
+                   agentname: agentname,
+                   chathistoryid: chatHistoryId
+               }, function (res) {
+                   $scope.messages.push(res);
+               });
+           }
+        };
+        //
+        // setSocketHandler();
+        //
+        // function setSocketHandler() {
+        //
+        //     mySocket.on("receive message from client", function (data) {
+        //         console.log(data);
+        //         console.log($scope.chatHistoryId + " and " + data.chathistoryid);
+        //         if (chatHistoryId == data.chathistoryid) {
+        //             $scope.messages.push(data);
+        //         }
+        //
+        //         console.log(arrayObjectIndexOf($scope.chatHistory, data.chathistoryid, "_id"));
+        //         $scope.chatHistory[arrayObjectIndexOf($scope.chatHistory, data.chathistoryid, "_id")].chats.push(data);
+        //         $scope.chatHistory[arrayObjectIndexOf($scope.chatHistory, data.chathistoryid, "_id")].lastmessage = data.message;
+        //
+        //         // pushMessages(res.username, res.message);
+        //     });
+        //
+        //     mySocket.on("client connected", function (data) {
+        //         //사용자가 접속되었다.
+        //         //사용자 리스트에 추가할 필요가 있다.
+        //         console.log("client connected");
+        //         console.log(data);
+        //         $scope.chatHistory.splice(0, 0, data);
+        //     });
+        //
+        //     mySocket.on("client disconnected", function (data) {
+        //         //사용자의 접속이 끊겼다.
+        //         //사용자 리스트에 추가할 필요가 있다.
+        //         //var obj = vm.chatHistory[arrayObjectIndexOf(vm.chatHistory, data._id, "_id")];
+        //         //vm.chatHistory.splice(arrayObjectIndexOf(vm.chatHistory, data._id, "_id"), 1);
+        //         //obj.id = undefined;
+        //         //vm.chatHistory.push(obj);
+        //         console.log(data);
+        //     });
+        // }
         return;
         //
         //

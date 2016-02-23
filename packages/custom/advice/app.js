@@ -28,9 +28,8 @@ Advice.register(function(app, auth, database) {
   Advice.aggregateAsset('css', 'themes.css');
   Advice.aggregateAsset('css', 'advice.css');
   Advice.aggregateAsset('css', 'panelStyle.css');
-  Advice.aggregateAsset('css', '../lib/components-font-awesome/css/font-awesome.css');
+
   Advice.aggregateAsset('js', '../lib/lodash/lodash.js');
-  Advice.aggregateAsset('js', '../lib/angular-socket-io/mock/socket-io.js');
   Advice.aggregateAsset('js', '../lib/angular-socket-io/socket.js');
 
 

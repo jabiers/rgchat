@@ -1,3 +1,8 @@
 .channel-example h1 {
-  background-color: purple
+    background-color: purple
+}
+
+.vertical-scroll {
+    max-height: 200px;
+    overflow-y:hidden;
 }

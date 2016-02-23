@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <section data-ng-controller="AdviceController" data-ng-init="init()">
@@ -5,7 +6,7 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <div class="row msg-container" ng-repeat="chatHistory in chatHistories" ng-click="vm.selectChatHistory(chatHistory)">
+            <div class="row msg-container" ng-repeat="chatHistory in chatHistories" ng-click="selectChatHistory(chatHistory)">
                 <div class="col-md-12 col-xs-12">
                     <div class="chat-msg">
                         <!-- <img ng-if="message.imageUrl" class="profile" ng-class="{'pull-right': selfAuthored, 'pull-left': !selfAuthored}" ng-src="{{message.imageUrl}}" /> -->
@@ -24,13 +25,13 @@
         <div id="page-content-wrapper">
             <rgchat-advice-chat
             id='rgchat'
-            messages="vm.messages"
-            username="vm.agentname"
+            messages="messages"
+            username="agentname"
             input-placeholder-text="메세지를 입력하세요."
             submit-button-text="보내기"
             title="RG Chat"
             theme="default"
-            submit-function="vm.sendMessage"
+            submit-function="sendMessage"
             visible="true">
         </rgchat-advice-chat>
 

@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 /**
- * Chat Schema
+ * Article Schema
  */
 var ChatSchema = new Schema({
     created: {
@@ -22,6 +22,10 @@ var ChatSchema = new Schema({
     chathistoryid: {
         type: Schema.ObjectId,
         ref: 'ChatHistory'
+    },
+    channelid: {
+        type:Schema.ObjectId,
+        ref: 'Channel'
     },
     message: {
         type: String,

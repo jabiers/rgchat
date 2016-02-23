@@ -29,16 +29,16 @@
 
         function link(scope, element) {
             if (!scope.inputPlaceholderText) {
-                scope.inputPlaceholderText = 'Write your message here...';
+                scope.inputPlaceholderText = '메세지를 입력해주세요.';
 
             }
 
             if (!scope.submitButtonText || scope.submitButtonText === '') {
-                scope.submitButtonText = 'Send';
+                scope.submitButtonText = '보내기';
             }
 
             if (!scope.title) {
-                scope.title = 'Chat';
+                scope.title = 'RG Chat';
             }
 
             scope.$msgContainer = $('.msg-container-base'); // BS angular $el jQuery lite won't work for scrolling

@@ -6,9 +6,9 @@
     .module('mean.channel')
     .controller('ChannelController', ChannelController);
 
-    ChannelController.$inject = ['$scope', 'Global', 'Channels'];
+    ChannelController.$inject = ['$http', '$scope', 'Global', 'Channels'];
 
-    function ChannelController($scope, Global, Channels) {
+    function ChannelController($http, $scope, Global, Channels) {
         $scope.global = Global;
         $scope.package = {
             name: 'channel'
@@ -91,6 +91,36 @@
             } else {
                 $scope.submitted = true;
             }
+        }
+
+        $scope.addAgents = function (email) {
+
+            $http({
+                method: "GET",
+                url: '/api/users/existEmail/' + email
+            }).then(function mySucces(response) {
+                console.log(response);
+
+            }, function myError(response) {
+                console.log(response);
+            });
+
+
+            // if (isValid) {
+            //     var channel = $scope.channel;
+            //     if (!channel.updated) {
+            //         channel.updated = [];
+            //     }
+            //
+            //     channel.updated.push(new Date().getTime());
+            //
+            //     channel.$update(function() {
+            //         // $location.path('articles/' + channel._id);
+            //         $scope.submitted = false;
+            //     });
+            // } else {
+            //     $scope.submitted = true;
+            // }
         }
     }
 })();

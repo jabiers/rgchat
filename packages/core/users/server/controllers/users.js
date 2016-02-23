@@ -1,23 +1,23 @@
 'use strict';
 
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 var mongoose = require('mongoose'),
-  User = mongoose.model('User'),
-  async = require('async'),
-  config = require('meanio').loadConfig(),
-  crypto = require('crypto'),
-  nodemailer = require('nodemailer'),
-  templates = require('../template'),
-  _ = require('lodash'),
-  jwt = require('jsonwebtoken'); //https://npmjs.org/package/node-jsonwebtoken
+User = mongoose.model('User'),
+async = require('async'),
+config = require('meanio').loadConfig(),
+crypto = require('crypto'),
+nodemailer = require('nodemailer'),
+templates = require('../template'),
+_ = require('lodash'),
+jwt = require('jsonwebtoken'); //https://npmjs.org/package/node-jsonwebtoken
 
 
 
 /**
- * Send reset password email
- */
+* Send reset password email
+*/
 function sendMail(mailOptions) {
     var transport = nodemailer.createTransport(config.mailer);
     transport.sendMail(mailOptions, function(err, response) {
@@ -31,34 +31,34 @@ function sendMail(mailOptions) {
 module.exports = function(MeanUser) {
     return {
         /**
-         * Auth callback
-         */
+        * Auth callback
+        */
         authCallback: function(req, res) {
-          var payload = req.user;
-          var escaped = JSON.stringify(payload);      
-          escaped = encodeURI(escaped);
-          // We are sending the payload inside the token
-          var token = jwt.sign(escaped, config.secret, { expiresInMinutes: 60*5 });
-          res.cookie('token', token);
-          var destination = config.strategies.landingPage;
-          if(!req.cookies.redirect)
+            var payload = req.user;
+            var escaped = JSON.stringify(payload);
+            escaped = encodeURI(escaped);
+            // We are sending the payload inside the token
+            var token = jwt.sign(escaped, config.secret, { expiresInMinutes: 60*5 });
+            res.cookie('token', token);
+            var destination = config.strategies.landingPage;
+            if(!req.cookies.redirect)
             res.cookie('redirect', destination);
-          res.redirect(destination);
+            res.redirect(destination);
         },
 
         /**
-         * Show login form
-         */
+        * Show login form
+        */
         signin: function(req, res) {
-          if (req.isAuthenticated()) {
-            return res.redirect('/');
-          }
-          res.redirect('/login');
+            if (req.isAuthenticated()) {
+                return res.redirect('/');
+            }
+            res.redirect('/login');
         },
 
         /**
-         * Logout
-         */
+        * Logout
+        */
         signout: function(req, res) {
 
             MeanUser.events.publish({
@@ -73,15 +73,15 @@ module.exports = function(MeanUser) {
         },
 
         /**
-         * Session
-         */
+        * Session
+        */
         session: function(req, res) {
-          res.redirect('/');
+            res.redirect('/');
         },
 
         /**
-         * Create user
-         */
+        * Create user
+        */
         create: function(req, res, next) {
             var user = new User(req.body);
             user.provider = 'local';
@@ -147,17 +147,17 @@ module.exports = function(MeanUser) {
 
                     // We are sending the payload inside the token
                     var token = jwt.sign(escaped, config.secret, { expiresInMinutes: 60*5 });
-                    res.json({ 
-                      token: token,
-                      redirect: config.strategies.landingPage
+                    res.json({
+                        token: token,
+                        redirect: config.strategies.landingPage
                     });
                 });
                 res.status(200);
             });
         },
         /**
-         * Send User
-         */
+        * Send User
+        */
         me: function(req, res) {
             if (!req.user || !req.user.hasOwnProperty('_id')) return res.send(null);
 
@@ -185,13 +185,13 @@ module.exports = function(MeanUser) {
                 escaped = encodeURI(escaped);
                 var token = jwt.sign(escaped, config.secret, { expiresInMinutes: 60*5 });
                 res.json({ token: token });
-               
+
             });
         },
 
         /**
-         * Find user by id
-         */
+        * Find user by id
+        */
         user: function(req, res, next, id) {
             User.findOne({
                 _id: id
@@ -204,8 +204,8 @@ module.exports = function(MeanUser) {
         },
 
         /**
-         * Resets the password
-         */
+        * Resets the password
+        */
 
         resetpassword: function(req, res, next) {
             User.findOne({
@@ -253,8 +253,8 @@ module.exports = function(MeanUser) {
         },
 
         /**
-         * Callback for forgot password link
-         */
+        * Callback for forgot password link
+        */
         forgotpassword: function(req, res, next) {
             async.waterfall([
 
@@ -312,7 +312,17 @@ module.exports = function(MeanUser) {
                 });
                 res.json(response);
             });
+        },
+        existEmail: function (req, res, next) {
+            User.find({
+                email: req.params.email
+            }, function(err, user) {
+                if (err) {
+                    return res.status(400).send(err);
+                } else {
+                    return res.json(user);
+                }
+            });
         }
     };
 }
-

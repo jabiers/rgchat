@@ -45,27 +45,40 @@
                                     <label class="col-md-2 control-label">첫인사말</label>
                                     <div class="col-md-10">
                                         <input id="hellomessage" name="hellomessage" type="text"
-                                               placeholder="상담 원하는 내용을 입력해주세요. 가능한한 빨리 답변 드리겠습니다."
-                                               data-ng-model="channel.hellomessage" class="form-control">
+                                        placeholder="상담 원하는 내용을 입력해주세요. 가능한한 빨리 답변 드리겠습니다."
+                                        data-ng-model="channel.hellomessage" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">부재중멘트</label>
                                     <div class="col-md-10">
                                         <input id="nobodymessage" name="nobodymessage" type="text"
-                                               placeholder="현재 접속중인 상담원이 없습니다."
-                                               data-ng-model="channel.nobodymessage" class="form-control">
+                                        placeholder="현재 접속중인 상담원이 없습니다."
+                                        data-ng-model="channel.nobodymessage" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">상담원</label>
-                                    <div class="col-md-8">
-                                        <input type="text" ng-model="channel.agents" class="form-control">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="btn" name="addagent" class="btn btn-primary">+</button>
+                                    <label class="col-md-2 control-label">상담원  <span class="badge">{{channel.agents.length}}</span></label>
+                                    <div class="col-md-10">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-ng-model="email">
+                                            <span class="input-group-btn">
+                                                <button type="btn" name="addagent" class="btn btn-primary" ng-click="addAgents(email)">+</button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label"></label>
+                                    <div class="vertical-scroll col-md-10">
+                                        <ul class="list-group">
+                                            <li class="list-group-item">abcdefg@ggg.com</li>
+                                            <li class="list-group-item" data-ng-repeat="agent in channel.agents">{{agent.email}}</li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

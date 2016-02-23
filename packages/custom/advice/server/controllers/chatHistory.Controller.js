@@ -5,6 +5,7 @@
 */
 var mongoose = require('mongoose'),
 ChatHistory = mongoose.model('ChatHistory'),
+Channel = mongoose.model('Channel'),
 _ = require('lodash');
 
 
@@ -24,19 +25,24 @@ module.exports = function (ChatHistories) {
         },
         all : function (req, res) {
 
-            var agentId = req.user;
-
-            ChatHistory.find({agents: req.user})
-            .sort('created')
-            .populate('chats')
-            .exec(function (err, chatHistories) {
-                if (err) {
-                    return res.status(500).json({
-                        error: 'Cannot list the ChatHistories'
-                    });
-                }
-                res.json(chatHistories);
+            Channel.find({$or:[{operator:req.user}, { agents: req.user } ]})
+            .select('_id')
+            .exec(function (err, channels) {
+                var ids = _.map(channels, function(channel) { return channel._id; });
+                ChatHistory.find({channelid:{$in : ids}})
+                .sort('created')
+                .populate('chats')
+                .exec(function (err, chatHistories) {
+                    if (err) {
+                        return res.status(500).json({
+                            error: 'Cannot list the ChatHistories'
+                        });
+                    }
+                    res.json(chatHistories);
+                });
             });
+            //채널이 내가 생성한 채널이어야한다.
+
         },
         destroy : function (req, res) {
             var chatHistory = req.chatHistory;
@@ -67,6 +73,7 @@ module.exports = function (ChatHistories) {
         show : function (req, res) {
             res.json(req.chatHistory);
         },
+
         chatHistory: function (req, res, next, id) {
             ChatHistory.load(id, function (err, chatHistory) {
                 if (err) return next(err);

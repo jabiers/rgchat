@@ -1,3 +1,4 @@
+var baseUrl = "http://rgchat.net:80/";
 (function () {
     'use strict';
 
@@ -15,8 +16,29 @@
 
     angular
         .module('mean.advice')
-        .factory('mySocket', function (socketFactory) {
-            return socketFactory();
+        .factory('mySocket', function($rootScope) {
+        	var socket = io.connect(baseUrl);
+        	return {
+        		on: function(eventName, callback) {
+        			socket.on(eventName, function() {
+        				var args = arguments;
+        				$rootScope.$apply(function() {
+        					callback.apply(socket, args);
+        				});
+        			});
+        		},
+        		emit: function(eventName, data, callback) {
+        			socket.emit(eventName, data, function() {
+        				console.log('event:', eventName);
+        				var args = arguments;
+        				$rootScope.$apply(function() {
+        					if (callback) {
+        						callback.apply(socket, args);
+        					}
+        				});
+        			});
+        		}
+        	};
         });
 
     angular
@@ -43,5 +65,4 @@
                 });
             }
         ]);
-    ;
 })();
