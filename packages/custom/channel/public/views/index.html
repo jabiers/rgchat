@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
-                <form name="channelForm" class="form-horizontal row-border" data-ng-submit="createOrUpdate(channelForm.$valid);" novalidate>
+                <form name="channelForm" class="form-horizontal row-border" novalidate>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">채널</h4>
@@ -59,7 +59,7 @@
                                     <label class="col-md-2 control-label">상담원  <span class="badge">{{channel.agents.length}}</span></label>
                                     <div class="col-md-10">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" data-ng-model="email">
+                                            <input type="text" class="form-control" data-ng-model="email" ng-enter="addAgents(email)">
                                             <span class="input-group-btn">
                                                 <input type="button" name="addagent" value="+" class="btn btn-primary" ng-click="addAgents(email)"></input>
                                             </span>
@@ -80,7 +80,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button mean-token="'create-submit'" type="submit" class="btn btn-primary">저장</button>
+                            <!-- <p p> -->
+                            <span class="text-danger">This text is important.</span>
+                            <!-- <span ng-show="!submitSuccess" class="">저장되었습니다.</span> -->
+                            <button mean-token="'create-submit'" type="submit" class="btn btn-primary" ng-click="createOrUpdate(channelForm.$valid);">저장</button>
+
                     </div>
                 </form>
             </div>

@@ -40,6 +40,7 @@
 
         $scope.onClickChannelRow = function (channel) {
             console.log(channel._id);
+            $scope.submitSuccess = false;
             Channels.get({
                 channelId: channel._id
             }, function (channel) {
@@ -50,6 +51,7 @@
 
         $scope.channelFormReset = function () {
             $scope.submitted = false;
+            $scope.submitSuccess = false;
             $scope.channel = undefined;
         }
 
@@ -66,6 +68,7 @@
                     console.log(response);
                     $scope.channels.push(response);
                     $scope.submitted = false;
+                    $scope.submitSuccess = true;
                 });
 
                 $scope.channel = {};
@@ -86,7 +89,10 @@
 
                 channel.$update(function () {
                     // $location.path('articles/' + channel._id);
+
+                    $scope.find();
                     $scope.submitted = false;
+                    $scope.submitSuccess = true;
                 });
             } else {
                 $scope.submitted = true;
@@ -120,6 +126,7 @@
                         $scope.find();
                         $scope.findOne();
                         $scope.submitted = false;
+                        $scope.submitSuccess = true;
                     });
                 } else {
                     $scope.addAgentSubmitted = true;
